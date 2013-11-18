@@ -1,0 +1,66 @@
+<VirtualHost *:80>
+  ServerName second.example.me
+  # !!! Be sure to point DocumentRoot to 'public'!
+  DocumentRoot /home/jakub/projects/DeviseSessionSharingExample/first/public
+  RailsEnv development
+  <Directory /home/jakub/projects/DeviseSessionSharingExample/first/>
+    # This relaxes Apache security settings.
+    AllowOverride all
+    # MultiViews must be turned off.
+    Options -MultiViews
+  </Directory>
+</VirtualHost>
+<VirtualHost *:80>
+  ServerName first.example.me
+  # !!! Be sure to point DocumentRoot to 'public'!
+  DocumentRoot /home/jakub/projects/DeviseSessionSharingExample/second/public
+  RailsEnv development
+  <Directory /home/jakub/projects/DeviseSessionSharingExample/second/>
+    # This relaxes Apache security settings.
+    AllowOverride all
+    # MultiViews must be turned off.
+    Options -MultiViews
+  </Directory>
+</virtualhost>
+
+<virtualhost *:443>
+  servername first.example.me
+  # !!! be sure to point documentroot to 'public'!
+  documentroot /home/jakub/projects/DeviseSessionSharingExample/first/public
+  railsenv development
+  proxypass / http://first.example.me/
+  proxypassreverse / http://first.example.me/
+  proxypreservehost on
+  requestheader set x_forwarded_proto 'https'
+  <directory /home/jakub/projects/first/>
+    allowoverride all
+    options -multiviews
+    order allow,deny
+    allow from all
+  </directory>
+  sslengine on
+  sslproxyengine on
+  sslcertificatefile /etc/apache2/ssl/apache.crt
+  sslcertificatekeyfile /etc/apache2/ssl/apache.key
+</virtualhost>
+
+<virtualhost *:443>
+  servername second.example.me
+  # !!! be sure to point documentroot to 'public'!
+  documentroot /home/jakub/projects/DeviseSessionSharingExample/second/public
+  railsenv development
+  proxypass / http://second.example.me/
+  proxypassreverse / http://second.example.me/
+  proxypreservehost on
+  requestheader set x_forwarded_proto 'https'
+  <directory /home/jakub/projects/DeviseSessionSharingExample/second/>
+    allowoverride all
+    options -multiviews
+    order allow,deny
+    allow from all
+  </directory>
+  sslengine on
+  sslproxyengine on
+  sslcertificatefile /etc/apache2/ssl/apache.crt
+  sslcertificatekeyfile /etc/apache2/ssl/apache.key
+</virtualhost>
