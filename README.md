@@ -1,5 +1,4 @@
-###The example shows how to configure two rails applications to share devise
-session and use local ssl conection.
+###The example shows how to configure two rails applications to share devise session and use local ssl conection.
 ## This is pure scaffold rails application with devise mounted on user.
 The applications are using the same secret_token (and have to use same pepper
 for passwords). The domain in config/initializers/session_store.rb is set to
